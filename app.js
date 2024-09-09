@@ -13,6 +13,7 @@ const refresRouter = require('./controllers/refres');
 const logoutRouter = require('./controllers/logout');
 const degreesRouter = require('./controllers/degrees');
 const subjectRouter = require('./controllers/subjects');
+const studentsRegistrationsRouter = require('./controllers/studentsRegistrations');
 
 // const morgan=require('morgan')
 
@@ -37,6 +38,7 @@ app.use('/api/refres', usertExtractor, refresRouter)
 app.use('/api/degrees', usertExtractor,degreesRouter)
 app.use('/api/subjects',usertExtractor ,subjectRouter)
 // app.use('/api/report',reportRouter );
+app.use('/api/studentsRegistrations', usertExtractor, studentsRegistrationsRouter)
 
 
 // app.get('/*', function(request,response){
