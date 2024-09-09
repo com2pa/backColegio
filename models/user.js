@@ -21,7 +21,13 @@ const userSchema =new mongoose.Schema({
     degree:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Degree'
+    }],
+    student:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'StudentRegistration'
     }]
+
+    
     
 })
 
