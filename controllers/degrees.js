@@ -9,7 +9,7 @@ degreesRouter.get('/', async (request, response) => {
     // nos muestra el usuario logiado 
     const user = request.user;
     // muestra todos los grados
-    const degrees = await Degree.find({});
+    const degrees = await Degree.find({}).populate('students','name');
     // console.log('mis grados', degrees)
     return response.status(200).json(degrees);
 });
