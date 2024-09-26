@@ -5,7 +5,7 @@ const Subject = require('../models/subject')
 // obtengo todas las materias
 subjectRouter.get('/', async (request, response) => {
     // obtener todas las materias
-    const subjects = await Subject.find({});
+    const subjects = await Subject.find({})
     // console.log('materias', subjects)
     // mostrar las materias
     return response.status(200).json(subjects);
