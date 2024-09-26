@@ -17,6 +17,10 @@ const degreeSchema= new mongoose.Schema({
     students:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'StudentRegistration'
+    }],
+    assignments:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Assignments'
     }]
 
 
