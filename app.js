@@ -14,6 +14,8 @@ const logoutRouter = require('./controllers/logout');
 const degreesRouter = require('./controllers/degrees');
 const subjectRouter = require('./controllers/subjects');
 const studentsRegistrationsRouter = require('./controllers/studentsRegistrations');
+const assignmentsRouter = require('./controllers/assignments');
+
 
 // const morgan=require('morgan')
 
@@ -39,6 +41,8 @@ app.use('/api/degrees', usertExtractor,degreesRouter)
 app.use('/api/subjects',usertExtractor ,subjectRouter)
 // app.use('/api/report',reportRouter );
 app.use('/api/studentsRegistrations', usertExtractor, studentsRegistrationsRouter)
+// registrar asignaciones por lapso
+app.use('/api/assignment',usertExtractor , assignmentsRouter)
 
 
 // app.get('/*', function(request,response){
