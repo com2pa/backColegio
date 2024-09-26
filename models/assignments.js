@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 
 const AssignmentsSchema = new  mongoose.Schema({
     name: String,
-    tipo:[{
+    tipo:{
         type: String,
         enum:[
             'individual',
             'grupal',
             'exposicion',
             'examen', 
-            'trabajoEscrito',
+            'trabajo escrito',
             'dibujo',
             'maqueta',
 
         ]
-    }],
-    lapso:[{
+    },
+    lapso:{
         type:String,
         enum:[
             '1er lapso',
@@ -23,15 +23,15 @@ const AssignmentsSchema = new  mongoose.Schema({
             '3er lapso',
             'Recuperacion Vacional',
         ]
-    }],
-    subject:[{
+    },
+    subjects:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject'
-    }],
-    degree:[{
+    },
+    degree:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Degree'
-    }],
+    },
     teacher:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
