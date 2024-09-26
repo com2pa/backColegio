@@ -17,6 +17,7 @@ const StudentRegistrationSchema =new mongoose.Schema({
         ref: 'User'
     }
     
+    
 })
 
 StudentRegistrationSchema.set('toJSON',{
