@@ -6,6 +6,10 @@ const subjectSchema = new mongoose.Schema({
     degree:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Degree'
+    }],
+    assignments:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Assignments'
     }]
 })
 
