@@ -14,6 +14,10 @@ const NoteSchema =new mongoose.Schema({
     assignment:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Assignments'
+    },
+    degree:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Degree'  
     }
 })
 
