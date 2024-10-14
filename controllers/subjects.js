@@ -27,22 +27,15 @@ subjectRouter.post('/', async (request, response) => {
     // crear una nueva asignatura
     const newSubject = new Subject({
         name: request.body.name,
-        // degree: request.params.id
         
     });
-    // degree: degreeId
+
 
     // validar los datos
     if (!newSubject.name) {
         return response.status(400).json({ error: 'El nombre de la asignatura es obligatorio' });
     }
    
-    // verificar que no exista una asignatura con el mismo nombre en el mismo grado
-    // const subjectExists = await Subject.findOne({ name: newSubject.name, degree: degreeId });
-    // if (subjectExists) {
-    //     return response.status(400).json({ error: 'Ya existe una asignatura con el mismo nombre en este grado' });
-    // }
-
     // verificar que no exista una asignatura con el mismo nombre en el mismo grado
     const subjectExists = await Subject.findOne({name:newSubject.name})
     if (subjectExists) {
@@ -52,14 +45,10 @@ subjectRouter.post('/', async (request, response) => {
     // guardar la nueva asignatura
     const savedSubject = await newSubject.save();
     console.log('asignatura guardada!', savedSubject)
-
-    // // // // agregar la nueva asignatura al grado
-    // if (Degree) {
-    //     Degree.subjects.push(savedSubject._id);
-    //     await Degree.save();
-    // } else {
-    //     return response.status(404).json({ error: 'El grado no existe' });
-    // }
+// agregando la asignatura al grado
+    // Degree.subjects.push('agregado la asignatura al grado',savedSubject);
+    // await Degree.save();
+   
     // mostrar la nueva asignatura
     return response.status(200).json(savedSubject);
 
@@ -99,32 +88,52 @@ subjectRouter.delete('/:id', async (request, response) => {
     if(user.role!=='admin'){
         return response.status(401).json('No estas autorizado para esta función')
     }
-    // obtener la asignatura
-    const subject = await Subject.findByIdAndDelete(request.params.id);
-    console.log('asignatura a eliminar',subject)
-    // verificar que la asignatura no exista
-    if (!subject) {
-        return response.status(404).json({ error: 'La asignatura no existe' });
-    }
-     
 
-//     // mostrar mensaje de exito
-    return response.status(200).json('asignatura eliminada');
+
+    // const{id}=request.params.id
+    // console.log(id)    
+    // // obtener la asignatura
+    const subject = await Subject.findByIdAndDelete(request.params.id);
+    console.log('asignatura a eliminar ',subject)
+    
+    // // // verificar que la asignatura no exista
+    // if (!subject) {
+    //     return response.status(404).json({ error: 'La asignatura no existe' });
+    // }
+    
+    // // // eliminar la materia de los grados
+    // Degree.subjects = Degree.subjects.filter(subjectId => subjectId.toString()!== request.params.id);
+    // await Degree.save();
+    // console.log('materias modificadas', Degree.subjects)
+    // // // mostrar mensaje de exito
+    return response.status(200).json('materia eliminada');
 });
+
 
 // actualizar 
 subjectRouter.patch('/:id', async(request, response)=>{
     const { degree } = request.body;
+    console.log(degree)
 
     // busco la asignatura
     const subject =await Subject.findById(request.params.id)
     if(!subject){
         return response.status(400).json('asignatura no encontrada');
     }
+    // busco el grado
+    await Degree.findById(degree);
+    if(!degree){
+        return response.status(400).json('grado no encontrado');
+    }
 
     // actualizo la materia en la base de datos
     const updatedSubject = await Subject.findByIdAndUpdate(request.params.id, {degree}, {new: true})
     console.log('asignatura modificada', updatedSubject);
+    
+     // guardar la asignatura en el grado
+     degree.subjects.push(updatedSubject._id);
+     await degree.save();
+     
     // muestro la materia modificada
     return response.status(200).json(updatedSubject)
 
