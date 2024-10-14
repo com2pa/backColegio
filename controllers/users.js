@@ -8,6 +8,18 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require("nodemailer");
 const { PAGE_URL } = require('../config');
 
+// muestro todo los usuarios
+
+usersRouter.get('/', async(request,response)=>{
+    const user =request.user
+    if(user.role!=='admin'){
+        return response.status(401).json('No estas autorizado para esta funcion')
+    }
+    const users = await User.find({});
+    // console.log('todos los usuarios', users)
+    return response.json(users);
+});
+
 // creando usuario
 usersRouter.post('/', async(request,response)=>{
   
