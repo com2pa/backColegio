@@ -15,6 +15,7 @@ const degreesRouter = require('./controllers/degrees');
 const subjectRouter = require('./controllers/subjects');
 const studentsRegistrationsRouter = require('./controllers/studentsRegistrations');
 const assignmentsRouter = require('./controllers/assignments');
+const noteRouter = require('./controllers/note');
 
 
 // const morgan=require('morgan')
@@ -43,6 +44,8 @@ app.use('/api/subjects',usertExtractor ,subjectRouter)
 app.use('/api/studentsRegistrations', usertExtractor, studentsRegistrationsRouter)
 // registrar asignaciones por lapso
 app.use('/api/assignment',usertExtractor , assignmentsRouter)
+// nota estudiante
+app.use('/api/note',usertExtractor ,noteRouter)
 
 
 // app.get('/*', function(request,response){
