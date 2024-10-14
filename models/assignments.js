@@ -12,6 +12,7 @@ const AssignmentsSchema = new  mongoose.Schema({
             'trabajo escrito',
             'dibujo',
             'maqueta',
+            'ejercicio',
 
         ]
     },
