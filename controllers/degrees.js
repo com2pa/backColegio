@@ -67,14 +67,12 @@ degreesRouter.delete('/:id', async (request, response) => {
     console.log('eliminado', elimi)
     // elimino el id del usuario en la lista de grados
     user.degree = user.degree.filter(ser=>ser.id !== request.params.id)
-
     // guardamos los cambios en el usuario
     const guardando = await user.save();
     // lo devuelvo
     return response.status(200).json('Grado eliminado correctamente');
 
- 
-    
+     
 });
 
 module.exports=degreesRouter;
