@@ -91,20 +91,22 @@ subjectRouter.delete('/:id', async (request, response) => {
 
 
     // const{id}=request.params.id
-    // console.log(id)    
+    // console.log(id)  
+
     // // obtener la asignatura
     const subject = await Subject.findByIdAndDelete(request.params.id);
     console.log('asignatura a eliminar ',subject)
     
-    // // // verificar que la asignatura no exista
-    // if (!subject) {
-    //     return response.status(404).json({ error: 'La asignatura no existe' });
-    // }
     
     // // // eliminar la materia de los grados
-    // Degree.subjects = Degree.subjects.filter(subjectId => subjectId.toString()!== request.params.id);
-    // await Degree.save();
-    // console.log('materias modificadas', Degree.subjects)
+    if(subject.degree) {
+        const degree = await Degree.findById(subject.degree);
+        if (degree) {
+            degree.subjects = degree.subjects.filter(subjectId => subjectId.toString() !== request.params.id);
+            await degree.save();
+            console.log('materias modificadas', degree.subjects)
+        }
+    }
     // // // mostrar mensaje de exito
     return response.status(200).json('materia eliminada');
 });
@@ -121,21 +123,35 @@ subjectRouter.patch('/:id', async(request, response)=>{
         return response.status(400).json('asignatura no encontrada');
     }
     // busco el grado
-    await Degree.findById(degree);
-    if(!degree){
+    const updatedDegree = await Degree.findById(degree);
+    if(!updatedDegree){
         return response.status(400).json('grado no encontrado');
+    }else{
+        // muestro todos los grados
+        
     }
 
     // actualizo la materia en la base de datos
     const updatedSubject = await Subject.findByIdAndUpdate(request.params.id, {degree}, {new: true})
     console.log('asignatura modificada', updatedSubject);
+
+    // updatedDegree.subjects.push(updatedSubject._id);
+    // await updatedDegree.save();
+    // console.log('grado modificado', updatedDegree)
+
+
+
+    // busco el grado
+    //   const degree = await Degree.findById(subject.degree);
+    //   if(!degree){
+    //       return response.status(400).json('grado no encontrado');
+    //   }else{
+    //     const updatedDegree = await Degree.findByIdAndUpdate(degree, {subjects: updatedSubject._id}, {new: true})
+    //     console.log('grado modificado', updatedDegree)
+    //         return response.status(200).json(updatedDegree)
+    //   }
     
-     // guardar la asignatura en el grado
-     degree.subjects.push(updatedSubject._id);
-     await degree.save();
-     
-    // muestro la materia modificada
-    return response.status(200).json(updatedSubject)
+
 
 })
 
