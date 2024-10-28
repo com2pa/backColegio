@@ -5,7 +5,7 @@ const Subject = require('../models/subject')
 // obtengo todas las materias
 subjectRouter.get('/', async (request, response) => {
     // obtener todas las materias
-    const subjects = await Subject.find({})
+    const subjects = await Subject.find({})    
     // console.log('materias', subjects)
     // mostrar las materias
     return response.status(200).json(subjects);
@@ -115,43 +115,53 @@ subjectRouter.delete('/:id', async (request, response) => {
 // actualizar 
 subjectRouter.patch('/:id', async(request, response)=>{
     const { degree } = request.body;
-    console.log(degree)
-
+    
     // busco la asignatura
     const subject =await Subject.findById(request.params.id)
     if(!subject){
         return response.status(400).json('asignatura no encontrada');
     }
-    // busco el grado
-    const updatedDegree = await Degree.findById(degree);
-    if(!updatedDegree){
-        return response.status(400).json('grado no encontrado');
-    }else{
-        // muestro todos los grados
-        
-    }
-
     // actualizo la materia en la base de datos
-    const updatedSubject = await Subject.findByIdAndUpdate(request.params.id, {degree}, {new: true})
-    console.log('asignatura modificada', updatedSubject);
+    const updatedSubject = await Subject.findByIdAndUpdate(request.params.id,{degree},{new:true})
+    console.log('asignatura modificada', updatedSubject)
 
-    // updatedDegree.subjects.push(updatedSubject._id);
-    // await updatedDegree.save();
-    // console.log('grado modificado', updatedDegree)
+    // añado la materia en los grado seleccionado
+    // Verifica si la propiedad 'degree' existe
+if (degree) {
+    // Si 'degree' es un array, se almacena en la variable 'degrees'.
+    // De lo contrario, se convierte en un array con un solo elemento, que es 'degree'.
+    const degrees = Array.isArray(degree) ? degree : [degree];
 
+    // Itera sobre cada elemento 'degId' del array 'degrees'
+    for (const degId of degrees) {
+        // Busca el grado correspondiente utilizando 'Degree.findByIdAndUpdate()'
+        const degreeFound = await Degree.findByIdAndUpdate(
+            degId,
+            // Utiliza el operador '$addToSet' para añadir el ID de la materia ('updatedSubject._id')
+            // al array 'subjects' del grado
+            { $addToSet: { subjects: updatedSubject._id } },
+            // La opción '{ new: true }' se utiliza para devolver el grado actualizado después de la actualización
+            { new: true }
+        );
 
-
-    // busco el grado
-    //   const degree = await Degree.findById(subject.degree);
-    //   if(!degree){
-    //       return response.status(400).json('grado no encontrado');
-    //   }else{
-    //     const updatedDegree = await Degree.findByIdAndUpdate(degree, {subjects: updatedSubject._id}, {new: true})
-    //     console.log('grado modificado', updatedDegree)
-    //         return response.status(200).json(updatedDegree)
-    //   }
+        // Si el grado se actualiza correctamente (es decir, si 'degreeFound' no es 'null'),
+        // imprime un mensaje de confirmación con el grado actualizado
+        if (degreeFound) {
+            console.log('materia añadida al grado', degreeFound);
+        }
+    }
+}
+  
     
+    // mostrar la nueva asignatura
+    return response.status(200).json(updatedSubject)
 
+   
+
+
+    
+    
+   
 
 })
 
