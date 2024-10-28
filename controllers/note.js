@@ -3,27 +3,40 @@ const students =require('../models/StudentRegistration')
 const degree= require('../models/degree')
 const assignment = require('../models/assignments')
 const subject = require('../models/subject')
+const Note = require('../models/note')
+
+// mostrar toda las nota 
+ noteRouter.get('/', async (request, response) => {
+    // obtener todas las notas
+    const notes = await Note.find({}).
+    populate({path:'subjects',select:'name'}).
+    poputate({path:'assignments',select:'name tipo'})     
+   
+    // console.log('notas', notes)
+    // mostrar las notas
+    return response.status(200).json(notes);
+});
+
 
 
 // creando la nota para el estudiante
-// studentId/:subjectId/:assignmentId
 noteRouter.post('/:id', async (request, response) => {
     const { studentId, subjectId, assignmentId, ponderacion, } = request.body;
 
     // verifico que el estudiante exista
-    const studentFound = await students.findById(studentId);
+    const studentFound = await students.findById(studentId).populate({path:'subjects',select:'name'});
     if (!studentFound) {
         return response.status(404).json('El estudiante no existe')
     }
 
     // verifico que la materia exista
-    const subjectFound = await subject.findById(subjectId);
+    const subjectFound = await subject.findById(subjectId).populate({path:'subjects',select:'name'});
     if (!subjectFound) {
         return response.status(404).json('La materia no existe')
     }
 
     // verifico que la tarea exista
-    const assignmentFound = await assignment.findById(assignmentId);
+    const assignmentFound = await assignment.findById(assignmentId).populate({path:'assignments',select:'name tipo'});
     if (!assignmentFound) {
         return response.status(404).json('La tarea no existe')
     }
