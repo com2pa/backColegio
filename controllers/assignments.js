@@ -14,18 +14,10 @@ assignmentsRouter.get('/', async (request, response) => {
         return response.status(401).json('No estas autorizado para esta función')
     }
 
-    // populate('subjectSelected','name').populate('selectedDegree','name')
-    const assignments = await Assignments.find({})
-    // .populate('degree','degree')
-    // .populate('subjects','name')
-        // .populate({
-    //     path: 'subjects',
-    //     match: 'name'
-    // })
-    // .populate({
-    //     path:'degree',
-    //     match:'degree'
-    // })
+    const assignments = await Assignments.find({}).
+    populate({path:'subjects',select:'name'}).
+    populate({path:'degree',select:'degree'}).exec()
+  
     // console.log(assignments)
     return response.status(200).json(assignments);
 });
@@ -64,7 +56,7 @@ assignmentsRouter.post('/', async (request,response)=>{
         return response.status(400).json('Grado no encontrado')
     }
 
-    const subject = await Subject.findById(subjectSelected)
+    const subject = await Subject.findById(subjectSelected).populate({path:'subject',select:'name tipo'})
     if(!subject){
         return response.status(400).json('Asignatura no encontrada')
     }
