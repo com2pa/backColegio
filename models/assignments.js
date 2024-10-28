@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const AssignmentsSchema = new  mongoose.Schema({
+const assignmentsSchema = new  mongoose.Schema({
     name: String,
     tipo:{
         type: String,
@@ -39,7 +39,7 @@ const AssignmentsSchema = new  mongoose.Schema({
 
     }
 })
-AssignmentsSchema.set('toJSON',{
+assignmentsSchema.set('toJSON',{
     transform: (document, returnedObject)=>{
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
@@ -47,6 +47,6 @@ AssignmentsSchema.set('toJSON',{
     }
 });
 
-const Assignments = mongoose.model('Assignments', AssignmentsSchema);
+const Assignments = mongoose.model('Assignments', assignmentsSchema);
 
 module.exports = Assignments;
