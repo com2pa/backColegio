@@ -12,9 +12,9 @@ const { PAGE_URL } = require('../config');
 
 usersRouter.get('/', async(request,response)=>{
     const user =request.user
-    if(user.role!=='admin'){
-        return response.status(401).json('No estas autorizado para esta funcion')
-    }
+    // if(user.role ==='admin' && user.role ==='maestro'){
+    //     return response.status(401).json('No estas autorizado para esta funcion')
+    // }
     const users = await User.find({});
     // console.log('todos los usuarios', users)
     return response.json(users);
