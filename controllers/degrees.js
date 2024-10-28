@@ -9,7 +9,7 @@ degreesRouter.get('/', async (request, response) => {
     // nos muestra el usuario logiado 
     const user = request.user;
     // muestra todos los grados
-    const degrees = await Degree.find({}).populate('students','name lastname');
+    const degrees = await Degree.find({}).populate('students','name lastname').populate('subjects').populate('assignments');
     // console.log('mis grados', degrees)
     return response.status(200).json(degrees);
 });
@@ -19,6 +19,7 @@ degreesRouter.get('/', async (request, response) => {
 degreesRouter.post('/', async (request, response) => {
     // nos muestra el usuario logiado 
     const user = request.user;
+
     console.log('usuario ',user)
     // verifico si el usuario es administrado
     if(user.role!=='admin'){
