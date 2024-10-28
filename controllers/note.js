@@ -9,8 +9,8 @@ const Note = require('../models/note')
  noteRouter.get('/', async (request, response) => {
     // obtener todas las notas
     const notes = await Note.find({}).
-    populate({path:'subjects',select:'name'}).
-    poputate({path:'assignments',select:'name tipo'})     
+    populate({path:'assignments',select:'subject name tipo '}).exec()
+        
    
     // console.log('notas', notes)
     // mostrar las notas
@@ -24,13 +24,13 @@ noteRouter.post('/:id', async (request, response) => {
     const { studentId, subjectId, assignmentId, ponderacion, } = request.body;
 
     // verifico que el estudiante exista
-    const studentFound = await students.findById(studentId).populate({path:'subjects',select:'name'});
+    const studentFound = await students.findById(studentId);
     if (!studentFound) {
         return response.status(404).json('El estudiante no existe')
     }
 
     // verifico que la materia exista
-    const subjectFound = await subject.findById(subjectId).populate({path:'subjects',select:'name'});
+    const subjectFound = await subject.findById(subjectId);
     if (!subjectFound) {
         return response.status(404).json('La materia no existe')
     }
