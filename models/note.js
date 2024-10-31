@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const NoteSchema =new mongoose.Schema({
     ponderacion : Number,
   
-    students:[{
+    students:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'StudentRegistration'
-    }],
+    },
     subject:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject'
@@ -18,7 +18,8 @@ const NoteSchema =new mongoose.Schema({
     degree:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Degree'  
-    }
+    }, 
+
 })
 
 NoteSchema.set('toJSON',{
