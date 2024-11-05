@@ -8,9 +8,9 @@ const Assignments = require('../models/assignments')
 
 // obtener todas las asignaciones
 assignmentsRouter.get('/', async (request, response) => {
-    // obtener todas las asignaturas
+    // obtener todas las asignaturasnpm install react-awesome-loaders
     const user = request.user
-    if(user.role !=='maestro' ){
+    if(user.role !=='maestro' && user.role !=='admin' ){
         return response.status(401).json('No estas autorizado para esta función')
     }
 
