@@ -6,6 +6,10 @@ const StudentRegistration = require('../models/StudentRegistration');
 const nodemailer = require("nodemailer");
 const { PAGE_URL } = require('../config');
 const { usertExtractor } = require("../middleware/auth");
+const ejs = require('ejs');
+const path = require('path');
+const fs = require('fs');
+
 
 
 // obtener todos los estudiantes registrados
@@ -13,12 +17,19 @@ const { usertExtractor } = require("../middleware/auth");
 studentsRegistrationsRouter.get('/', async (request, response) => {
     // nos muestra el usuario logiado 
     const user = request.user;
-    if(user.role !== 'representante'){
+    if(user.role !== 'representante' && user.role !== 'admin' && user.role !== 'maestro'){
         return response.status(401).json('No estas autorizado para esta función')
     }
-    // muestra todos los estudiantes registrados
+    // studentsRegistrations = await StudentRegistration.find({});
     
-    const studentsRegistrations = await StudentRegistration.find({});
+    // // muestra todos los estudiantes registrados
+    let studentsRegistrations;
+    if (user.role === 'representante') {
+        studentsRegistrations = await StudentRegistration.find({ user: user._id });
+    }else {
+        studentsRegistrations = await StudentRegistration.find({});
+    }
+
     // console.log('estudiantes registrados', studentsRegistrations)
     return response.status(200).json(studentsRegistrations);
  
@@ -90,17 +101,25 @@ studentsRegistrationsRouter.post('/',async(request,response)=>{
           pass: process.env.EMAIL_PASS,
         },
     });
-    // //  como enviar el correo
+    // const filePath = path.join(__dirname, '../templates/RegistroStudens.html');
+    // let htmlTemplate = '';
+    // try {
+    //     htmlTemplate = fs.readFileSync(filePath, 'utf8');
+    //   } catch (err) {
+    //     console.error(`Error reading HTML template: ${err}`);
+    //   }
+    // //  como enviar el correo html: htmlTemplate 
     await transporter.sendMail({
         from: process.env.EMAIL_USER, // sender address
         to:  [process.env.EMAIL_USER, User.email],
         subject: "Inscripcion  ✔", // Subject line
-        text: "Inscripcion  ✔  ", 
-        html: ` ha inscrito las siguientes personas :
+        text: "Inscripcion  ✔  ",
+        html:`ha inscrito las siguientes personas :
             <p>${savedStudent.name} </p>
             <p>${savedStudent.lastname} </p>
-            <p>${savedStudent.degree} grado  </p>
-        `
+            <p>${savedStudent.age} </p>
+           `  
+       
       });
 
       return response.status(201).json(savedStudent);
