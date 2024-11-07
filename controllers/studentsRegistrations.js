@@ -6,9 +6,9 @@ const StudentRegistration = require('../models/StudentRegistration');
 const nodemailer = require("nodemailer");
 const { PAGE_URL } = require('../config');
 const { usertExtractor } = require("../middleware/auth");
-const ejs = require('ejs');
-const path = require('path');
-const fs = require('fs');
+// const ejs = require('ejs');
+// const path = require('path');
+// const fs = require('fs');
 
 
 
