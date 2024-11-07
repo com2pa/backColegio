@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-// const path = require('path');
+const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const usersRouter = require('./controllers/users');
@@ -48,8 +48,10 @@ app.use('/api/assignment',usertExtractor , assignmentsRouter)
 app.use('/api/note',usertExtractor ,noteRouter)
 
 
-// app.get('/*', function(request,response){
-//   response.sendFile(path.resolve(__dirname, 'dist', 'index.html' ));
-// });
+app.use(express.static(path.resolve(__dirname, 'dist')));
+
+app.get('/*', function(request,response){
+  response.sendFile(path.resolve(__dirname, 'dist', 'index.html' ));
+});
 
 module.exports = app;
