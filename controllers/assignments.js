@@ -56,7 +56,7 @@ assignmentsRouter.post('/', async (request,response)=>{
         return response.status(400).json('Grado no encontrado')
     }
 
-    const subject = await Subject.findById(subjectSelected).populate({path:'subject',select:'name tipo'})
+    const subject = await Subject.findById(subjectSelected)
     if(!subject){
         return response.status(400).json('Asignatura no encontrada')
     }
@@ -82,10 +82,6 @@ assignmentsRouter.post('/', async (request,response)=>{
         // subject: subjectSelected,  // se cambia para que sea un array de ids
         user: user._id,
     })
-
-    
-    
-
     await newAssignment.save()
     // guardar las asignaciones en el grado
     degree.assignments.push(newAssignment);
@@ -96,12 +92,7 @@ assignmentsRouter.post('/', async (request,response)=>{
     await degree.save();
     // retorno la nueva asignación
    
-    return response.status(201).json(newAssignment)
-        
-       
-        
-    
-
+    return response.status(200).json(newAssignment)
 }) ;
 
 // eliminar la asignacion
