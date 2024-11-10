@@ -1,5 +1,5 @@
 const PAGE_URL = process.env.NODE_ENV === 'production'
-    ? 'placeholder'
+    ? 'https://backcolegio.onrender.com'
     : 'http://localhost:5173';
 
     const MONGO_URL = process.env.NODE_ENV === 'production'
